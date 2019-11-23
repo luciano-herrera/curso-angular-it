@@ -1,0 +1,58 @@
+<h3>Formularios Reactivos</h3>
+<p>Son Formulario Reactivos por que son manejados por el .ts, se manipulan los datos desde el .ts (.js).</p>
+<p>Para tener en cuenta: Un formulario es un conjunto de controles [FormGroup], a su vez este formulario nos va a pedir controles [FormControl] puede tener de 0 a n.</p>
+<!--[FormGroup] es una propiedad que pasa el .ts al .html por eso va con corchetes-->
+<!--(ngSubmit) es una propiedad que pasa el .html al .ts por eso va con parentesis-->
+<form [formGroup]="registroForm" (ngSubmit)="formularioEnviado()">
+  <div class="row">
+    <div class="form-group col-4">
+      <label for="">Nombre:</label>
+      <!--[ngClass] variables de clases, que se definen desde el .ts
+        Ejemplo: se va a agregar la clase 'is-invalid' si la propiedad del 'FormGroup.get(FormControl).touched' es verdadero-->
+      <input type="text" class="form-control" [ngClass]="{'is-invalid':registroForm.get('nombre').touched && registroForm.get('nombre').invalid}" formControlName="nombre">
+      <!--'invalid-feedback' lo maneja boostrap, cuando hay una error-->
+      <div class="invalid-feedback">
+          <div *ngIf="registroForm.get('nombre').hasError('required')">
+              Debe ingresar un nombre
+          </div>
+          <div *ngIf="registroForm.get('nombre').hasError('minlength')">
+              El nombre debe contener al menos 5 letras
+          </div>
+          <div *ngIf="registroForm.get('nombre').hasError('maxlength')">
+              El nombre no debe contener mas de 30 letras
+          </div>
+      </div>
+    </div>
+    <div class="form-group col-4">
+      <label for="">Apellido:</label>
+      <input type="text" class="form-control" [ngClass]="{'is-invalid':registroForm.get('apellido').touched && registroForm.get('apellido').invalid}" formControlName="apellido">
+      <div class="invalid-feedback">
+        <div *ngIf="registroForm.get('apellido').hasError('required')">
+          Ingrese el apellido.
+        </div>
+        <div *ngIf="registroForm.get('apellido').hasError('minlength')">
+          Debe contener al menos 5 letras
+        </div>
+        <div *ngIf="registroForm.get('apellido').hasError('maxlength')">
+          No debe contener mas de 30 letras
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-4">
+      <label for="">Email:</label>
+      <input type="text" class="form-control" [ngClass]="{'is-invalid':registroForm.get('email').errors && registroForm.get('email').touched}" formControlName="email" (change)="captureErrors(registroForm.get('email').errors)">
+      <div class="invalid-feedback">
+          <div *ngIf="registroForm.get('email').hasError('required')">
+              Ingrese el email.
+          </div>
+          <div *ngIf="registroForm.get('email').hasError('Email') && !registroForm.get('email').hasError('required')">
+              El Email ingresado no es válido.
+          </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <button class="btn btn-primary" type="submit" [disabled]="registroForm.invalid">Enviar</button>
+</form>
+<pre>{{registroForm.value | json}}</pre>
+<p>Validez del formulario: {{registroForm.valid}}</p>

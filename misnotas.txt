@@ -1,0 +1,2 @@
+ng generate component NOMBRE: Crea un nuevo componente en el directorio que estamos parados y lo agrega al app.modules.ts
+
